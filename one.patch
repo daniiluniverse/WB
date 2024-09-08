@@ -1,0 +1,73 @@
+Subject: [PATCH] one
+---
+Index: src/models.rs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/models.rs b/src/models.rs
+new file mode 100644
+--- /dev/null	(revision a4c16f0d40a7951927cd519d182e05bc79970601)
++++ b/src/models.rs	(revision a4c16f0d40a7951927cd519d182e05bc79970601)
+@@ -0,0 +1,59 @@
++use serde::{Deserialize, Serialize};
++
++#[derive(Debug, Serialize, Deserialize, Clone)]
++pub struct Delivery {
++    pub name: String,
++    pub phone: String,
++    pub zip: String,
++    pub city: String,
++    pub address: String,
++    pub region: String,
++    pub email: String,
++}
++
++#[derive(Debug, Serialize, Deserialize, Clone)]
++pub struct Payment {
++    pub transaction: String,
++    pub request_id: String,
++    pub currency: String,
++    pub provider: String,
++    pub amount: u64,
++    pub payment_dt: u64,
++    pub bank: String,
++    pub delivery_cost: u64,
++    pub goods_total: u64,
++    pub custom_fee: u64,
++}
++
++#[derive(Debug, Serialize, Deserialize, Clone)]
++pub struct Item {
++    pub chrt_id: u64,
++    pub track_number: String,
++    pub price: u64,
++    pub rid: String,
++    pub name: String,
++    pub sale: u64,
++    pub size: String,
++    pub total_price: u64,
++    pub nm_id: u64,
++    pub brand: String,
++    pub status: u32,
++}
++
++#[derive(Debug, Serialize, Deserialize, Clone)]
++pub struct Order {
++    pub order_uid: String,
++    pub track_number: String,
++    pub entry: String,
++    pub delivery: Delivery,
++    pub payment: Payment,
++    pub items: Vec<Item>,
++    pub locale: String,
++    pub internal_signature: String,
++    pub customer_id: String,
++    pub delivery_service: String,
++    pub shardkey: String,
++    pub sm_id: u32,
++    pub date_created: String,
++    pub oof_shard: String,
++}
+diff --git a/src/lib.rs b/src/lib.rs
+new file mode 100644
