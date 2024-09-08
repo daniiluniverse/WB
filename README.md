@@ -27,7 +27,7 @@ RUST_LOG=debug cargo run L0_WB  Mac
 
 ```
 
-Тестовый запрос
+Тестовый запрос POST
 
 ```bash
 cargo run --bin test_api
