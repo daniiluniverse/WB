@@ -1,46 +1,20 @@
-WB Tech: level # 0 (Golang)
 
-Тестовое задание
+
+Задание LO
 ================
 
-Необходимо разработать демонстрационный сервис с простейшим интерфейсом, отображающий данные о заказе. [Модель данных в формате JSON](https://drive.google.com/file/d/1rrA7SJUoaGQwDriyY56MAeLT0J_OQkZF/view?usp=sharing) прилагается к заданию.
+Необходимо разработать демонстрационный сервис с простейшим интерфейсом, отображающий данные о заказе. [Модель данных в формате JSON]([https://drive.google.com/file/d/1rrA7SJUoaGQwDriyY56MAeLT0J_OQkZF/view?usp=sharing](https://drive.google.com/file/d/1rrA7SJUoaGQwDriyY56MAeLT0J_OQkZF/view)) прилагается к заданию.
 
-Что нужно сделать:
+Требования
 
-1.  Развернуть локально PostgreSQL
+1.  Заказы должны быть иммутабельны (не меняются после создания, только добавляются). Исходя из этого, подумайте насчет модели хранения в кэше и в PostgreSQL. Модель в файле model.json
 
-1.  Создать свою БД
+2.  Подумайте как избежать проблем, связанных с тем, что в ручку (http-endpoint) могут закинуть что-угодно
 
-2.  Настроить своего пользователя
+3.  Для тестирования сделайте себе отдельный скрипт для публикации данных через API
 
-3.  Создать таблицы для хранения полученных данных
+4.  Подумайте, как не терять данные в случае ошибок или проблем с сервисом
 
-3.  Разработать сервис
-
-1.  Реализовать подключение и подписку на канал в nats-streaming
-
-2.  Полученные данные записывать в БД
-
-3.  Реализовать кэширование полученных данных в сервисе (сохранять in memory)
-
-4.  В случае падения сервиса необходимо восстанавливать кэш из БД
-
-5.  Запустить http-сервер и выдавать данные по id из кэша
-
-5.  Разработать простейший интерфейс отображения полученных данных по id заказа
-
-Советы
-------
-
-1.  Данные статичны, исходя из этого подумайте насчет модели хранения в кэше и в PostgreSQL. Модель в файле model.json
-
-2.  Подумайте как избежать проблем, связанных с тем, что в канал могут закинуть что-угодно
-
-3.  Чтобы проверить работает ли подписка онлайн, сделайте себе отдельный скрипт, для публикации данных в канал
-
-4.  Подумайте как не терять данные в случае ошибок или проблем с сервисом
-
-5.  Nats-streaming разверните локально (не путать с Nats)
 
 
 Запуск 
@@ -48,77 +22,71 @@ WB Tech: level # 0 (Golang)
 Запуск окружения
 
 ```bash
-docker compose up -d
+$env:RUST_LOG="debug"; cargo run L0_WB  Windows
+RUST_LOG=debug cargo run L0_WB  Mac
+
 ```
 
-Запуск сервиса
+Тестовый запрос
 
 ```bash
-go run cmd/app/main.go
+cargo run --bin test_api
 ```
 
-Отправка заказа в NATS
-
-```bash
-go run cmd/order-generator/main.go
-```
 
 Пример запроса на получение данных
 
 ```http
-GET http://localhost:8081/order/84c58a96-9d02-11ee-8290-eedf1aa1603b
+GET http://127.0.0.1:3000/
 ```
 
 Ответ
 
 ```json
 {
-    "customer_id": "test",
-    "date_created": "2021-11-26T06:22:19Z",
-    "delivery": {
-        "address": "Ploshad Mira 15",
-        "city": "Kiryat Mozkin",
-        "email": "test@gmail.com",
-        "name": "Test Testov",
-        "phone": "+9720000000",
-        "region": "Kraiot",
-        "zip": "2639809"
+    "locale": "ru",
+    "internal_signature": "sweew",
+    "customer_id": "cust_001",
+    "delivery_service": "DHL",
+    "shardkey": "key_001",
+    "sm_id": 66,
+    "date_created": "2023-09-03T12:00:00Z",
+    "oof_shard": "shard_001",
+    "order_uid": "555",
+    "track_number": "TRACK123",
+    "entry": "web",
+    "items": {
+      "chrt_id": 123,
+      "track_number": "TRACK123",
+      "price": 1000,
+      "rid": "RID123",
+      "name": "Товар Имя",
+      "sale": 10,
+      "size": "M",
+      "total_price": 900,
+      "nm_id": 456,
+      "brand": "Бренд",
+      "status": 404
     },
-    "delivery_service": "meest",
-    "entry": "WBIL",
-    "internal_signature": "",
-    "items": [
-        {
-            "brand": "Vivienne Sabo",
-            "chrt_id": 9934930,
-            "name": "Mascaras",
-            "nm_id": 2389212,
-            "price": 453,
-            "rid": "ab4219087a764ae0btest",
-            "sale": 30,
-            "size": "0",
-            "status": 202,
-            "total_price": 317,
-            "track_number": "WBILMTESTTRACK"
-        }
-    ],
-    "locale": "en",
-    "oof_shard": "1",
-    "order_uid": "b563feb7b2b84b6test",
     "payment": {
-        "amount": 1817,
-        "bank": "alpha",
-        "currency": "USD",
-        "custom_fee": 0,
-        "delivery_cost": 1500,
-        "goods_total": 317,
-        "payment_dt": 1637907727,
-        "provider": "wbpay",
-        "request_id": "",
-        "transaction": "b563feb7b2b84b6test"
+      "transaction": "TRANS123",
+      "request_id": "REQ123",
+      "currency": "USD",
+      "provider": "VISA",
+      "amount": 900,
+      "payment_dt": 1633036800,
+      "bank": "Название банка",
+      "delivery_cost": 50,
+      "goods_total": 950,
+      "custom_fee": 0
     },
-    "shardkey": "9",
-    "sm_id": 99,
-    "track_number": "WBILMTESTTRACK"
-}
+    "delivery": {
+      "name": "John Doe",
+      "phone": "+1234567890",
+      "zip": "12345",
+      "city": "Город",
+      "address": "123 Main St",
+      "region": "Регион",
+      "email": "email@example.com"
+    }
 ```
