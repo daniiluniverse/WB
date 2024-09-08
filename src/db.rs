@@ -12,9 +12,6 @@
  use validator::Validate;
  use crate::SharedState;
 
-
-
-
 //Обработчик для получения списка заказов
 pub(crate) async fn get_status(State(client): State<SharedState>) -> Json<Vec<Order>> {
      info!("Получение статуса заказов");
