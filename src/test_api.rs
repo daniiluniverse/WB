@@ -69,7 +69,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Пример заказа для отправки
     let order = Order {
-        order_uid: "555".to_string(),
+        order_uid: "testOrder999".to_string(),
         track_number: "TRACK123".to_string(),
         entry: "web".to_string(),
         locale: "en".to_string(),
@@ -77,7 +77,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         customer_id: "cust_001".to_string(),
         delivery_service: "DHL".to_string(),
         shardkey: "key_001".to_string(),
-        sm_id: 66,
+        sm_id: 585,
         date_created: "2023-09-03T12:00:00Z".to_string(),
         oof_shard: "shard_001".to_string(),
         items: Items {
