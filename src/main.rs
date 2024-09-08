@@ -9,18 +9,14 @@ use crate::db::{get_status, add_order};
 use log::{debug, error, info};
 use tokio::sync::Mutex;
 
-//type SharedState = Arc<tokio_postgres::Client>;
 type SharedState = Arc<Mutex<tokio_postgres::Client>>;
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-
     env_logger::init();
 
     info!("Запуск сервера...");
-
 
     // Подключение к базе данных
     let (mut client, connection) =
@@ -48,9 +44,6 @@ let shared_state: SharedState = Arc::new(Mutex::new(client));
 
      info!("Сервер запущен на {}", address);
 
-
-
-    // Запуск сервера
      // Запуск сервера
     let listener = tokio::net::TcpListener::bind(address).await;
     match listener {
@@ -64,8 +57,6 @@ let shared_state: SharedState = Arc::new(Mutex::new(client));
             error!("Не удалось подключиться к адресу {}: {}", address, e);
         }
     }
-
-
 
     Ok(())
 }
